@@ -35,6 +35,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.feature_extraction.text import _document_frequency
 
+
 class BM25Transformer(BaseEstimator, TransformerMixin):
     """
     Parameters
@@ -47,6 +48,7 @@ class BM25Transformer(BaseEstimator, TransformerMixin):
     Okapi BM25: a non-binary model - Introduction to Information Retrieval
     http://nlp.stanford.edu/IR-book/html/htmledition/okapi-bm25-a-non-binary-model-1.html
     """
+
     def __init__(self, use_idf=True, k1=2.0, b=0.75):
         self.use_idf = use_idf
         self.k1 = k1
@@ -76,7 +78,7 @@ class BM25Transformer(BaseEstimator, TransformerMixin):
             document-term matrix
         copy : boolean, optional (default=True)
         """
-        if hasattr(X, 'dtype') and np.issubdtype(X.dtype, np.float):
+        if hasattr(X, "dtype") and np.issubdtype(X.dtype, np.float):
             # preserve float family dtype
             X = sp.csr_matrix(X, copy=copy)
         else:
@@ -103,17 +105,23 @@ class BM25Transformer(BaseEstimator, TransformerMixin):
         # Scalar value
         avgdl = np.average(dl)
         # Compute BM25 score only for non-zero elements
-        data = X.data * (self.k1 + 1) / (X.data + self.k1 * (1 - self.b + self.b * rep / avgdl))
+        data = (
+            X.data
+            * (self.k1 + 1)
+            / (X.data + self.k1 * (1 - self.b + self.b * rep / avgdl))
+        )
         X = sp.csr_matrix((data, X.indices, X.indptr), shape=X.shape)
 
         if self.use_idf:
-            check_is_fitted(self, '_idf_diag', 'idf vector is not fitted')
+            check_is_fitted(self, "_idf_diag", "idf vector is not fitted")
 
             expected_n_features = self._idf_diag.shape[0]
             if n_features != expected_n_features:
-                raise ValueError("Input has n_features=%d while the model"
-                                 " has been trained with n_features=%d" % (
-                                     n_features, expected_n_features))
+                raise ValueError(
+                    "Input has n_features=%d while the model"
+                    " has been trained with n_features=%d"
+                    % (n_features, expected_n_features)
+                )
             # *= doesn't work
             X = X * self._idf_diag
 
