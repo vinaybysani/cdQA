@@ -40,7 +40,7 @@ class BM25Transformer(BaseEstimator, TransformerMixin):
     """
     Parameters
     ----------
-     norm : 'l1', 'l2' or None, optional (default='l2')
+     norm : 'l1', 'l2' or None, optional (default=None)
         Each output row will have unit norm, either:
         * 'l2': Sum of squares of vector elements is 1. The cosine
         similarity between two vectors is their dot product when l2 norm has
@@ -56,7 +56,7 @@ class BM25Transformer(BaseEstimator, TransformerMixin):
     http://nlp.stanford.edu/IR-book/html/htmledition/okapi-bm25-a-non-binary-model-1.html
     """
 
-    def __init__(self, norm='l2',use_idf=True, k1=2.0, b=0.75):
+    def __init__(self, norm=None,use_idf=True, k1=2.0, b=0.75):
         self.norm = norm
         self.use_idf = use_idf
         self.k1 = k1
