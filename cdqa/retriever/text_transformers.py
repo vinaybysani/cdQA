@@ -134,6 +134,7 @@ class BM25Transformer(BaseEstimator, TransformerMixin):
             # *= doesn't work
             X = X * self._idf_diag
 
-        X = normalize(X, norm=self.norm, copy=False)
+        if self.norm:
+            X = normalize(X, norm=self.norm, copy=False)
 
         return X
