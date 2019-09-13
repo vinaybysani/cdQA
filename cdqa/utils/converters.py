@@ -60,7 +60,7 @@ def df2squad(df, squad_version="v1.1", output_dir=None, filename=None):
     return json_data
 
 
-def generate_squad_examples(question, closest_docs_indices, metadata):
+def generate_squad_examples(question, closest_docs_indices, metadata, retrieve_by_doc):
     """
     Creates a SQuAD examples json object for a given for a given question using outputs of retriever and document database.
 
@@ -91,18 +91,26 @@ def generate_squad_examples(question, closest_docs_indices, metadata):
 
     metadata_sliced = metadata.loc[closest_docs_indices]
 
-    for index, row in tqdm(metadata_sliced.iterrows()):
+    for index, row in metadata_sliced.iterrows():
         temp = {"title": row["title"], "paragraphs": []}
 
-        for paragraph in row["paragraphs"]:
-            temp["paragraphs"].append(
-                {
-                    "context": paragraph,
+        if retrieve_by_doc:
+            for paragraph in row["paragraphs"]:
+                temp["paragraphs"].append(
+                    {
+                        "context": paragraph,
+                        "qas": [
+                            {"answers": [], "question": question, "id": str(uuid.uuid4())}
+                        ],
+                    }
+                )
+        else:
+            temp["paragraphs"]=[{
+                    "context": row["content"],
                     "qas": [
                         {"answers": [], "question": question, "id": str(uuid.uuid4())}
                     ],
-                }
-            )
+                }]
 
         squad_examples.append(temp)
 

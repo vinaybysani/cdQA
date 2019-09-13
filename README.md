@@ -12,6 +12,12 @@
 
 An End-To-End Closed Domain Question Answering System.
 
+## cdQA in details
+
+If you are interested in understanding how the system works and its implementation, we wrote an [article on Medium](https://towardsdatascience.com/how-to-create-your-own-question-answering-system-easily-with-python-2ef8abc8eb5) with a high-level explanation.
+
+We also made a presentation during the \#9 NLP Breakfast organised by [Feedly](feedly.com). You can check it out [here](https://blog.feedly.com/nlp-breakfast-9-closed-domain-question-answering/).
+
 ## Table of Contents <!-- omit in toc -->
 
 - [Installation](#Installation)
@@ -124,6 +130,10 @@ cdqa_pipeline = QAPipeline(model='bert_qa_vGPU-sklearn.joblib')
 cdqa_pipeline.fit_reader('path-to-custom-squad-like-dataset.json')
 ```
 
+Save the reader model after fine-tuning:
+```python
+cdqa_pipeline.dump_reader('path-to-save-bert-reader.joblib')
+```
 ### Making predictions
 
 To get the best prediction given an input query:
@@ -220,7 +230,7 @@ Read our [Contributing Guidelines](.github/CONTRIBUTING.md).
 | :newspaper: Paper    | [Unsupervised Question Answering by Cloze Translation](https://arxiv.org/abs/1906.04980)                                                     | Patrick Lewis, Ludovic Denoyer, Sebastian Riedel                                       | 2019 |
 | :computer: Framework | [Scikit-learn: Machine Learning in Python](http://jmlr.csail.mit.edu/papers/v12/pedregosa11a.html)                                           | Pedregosa et al.                                                                       | 2011 |
 | :computer: Framework | [PyTorch](https://arxiv.org/abs/1906.04980)                                                                                                  | Adam Paszke, Sam Gross, Soumith Chintala, Gregory Chanan                               | 2016 |
-| :computer: Framework | [PyTorch Pretrained BERT: The Big & Extending Repository of pretrained Transformers](https://github.com/huggingface/pytorch-pretrained-BERT) | Hugging Face                                                                           | 2018 |
+| :computer: Framework | [PyTorch Transformers: A library of state-of-the-art pretrained models for Natural Language Processing (NLP)](https://github.com/huggingface/pytorch-pretrained-BERT) | Hugging Face                                                                           | 2018 |
 
 ## LICENSE
 
